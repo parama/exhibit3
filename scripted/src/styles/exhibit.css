@@ -21,11 +21,13 @@ a img {
 a.exhibit-action, 
 a.exhibit-action:link, 
 a.exhibit-action:active, 
+/*border bottom for visited link is dotted*/
 a.exhibit-action:visited {
 	text-decoration:    none;
 	border-bottom:      1px dotted;
 	cursor:             pointer;
 }
+/*border bottom for visited link is solid when user hovers over it*/
 a.exhibit-action:hover {
 	border-bottom:  1px solid;
 	cursor:         pointer;
@@ -48,6 +50,7 @@ a.exhibit-action-disabled:hover {
 a.exhibit-item, 
 a.exhibit-item:link, 
 a.exhibit-item:active, 
+/*border bottom for visited exhibit item is red and dotted*/
 a.exhibit-item:visited {
 	text-decoration:    none;
 	border-bottom:      1px dotted red;
@@ -68,7 +71,7 @@ div.exhibit-menu-popup {
     position:       absolute;
     width:          15em;
     z-index:        1000;
-    background:     #FFFFE0;
+    /*background:     #FFFFE0;*/
     border:         1px solid #aaa;
 }
 

@@ -1,0 +1,149 @@
+<html>
+<head>
+   	<title>Pia Pal | Projects and Coursework</title>
+	<link rel="shortcut icon" href="https://dl.dropbox.com/u/3309744/sp2_mistral_favicon.ico" >
+	
+   <link rel="stylesheet" href="cv_3.css" type="text/css" />
+   <link rel="stylesheet" href="http://www.simile-widgets.org/styles/common.css" type="text/css" />
+   <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+   <link href="cv.js" type="application/json" rel="exhibit-data" />
+
+	<link rel="stylesheet" href="../../../../classes/storyCharts/styles/themes/journal/bootstrap.min.css">
+	<link rel="stylesheet/less" href="../styles/themes/journal/bootswatch.less">
+	<link rel="stylesheet/less" href="../styles/themes/journal/variables.less">
+	<link rel="stylesheet/less" href="../styles/less-1.3.0.min.less">
+
+   <script src="http://api.simile-widgets.org/exhibit/3.0.0rc1/exhibit-api.js"></script>
+           
+   <style>
+       .exhibit-tileView-body { list-style: none; }
+       .exhibit-collectionView-group-count { display: none; }
+	
+	div.exhibit-facet-body {
+		border: none;
+	}
+	
+	 //why do the parenthesis show up by default??
+       table.nobelist {
+           border:     1px solid #ddd;
+           padding:    5px;
+           margin:     0.5em 0;
+           display:    block;
+       }
+
+	.exhibit-ui-protection div {
+		text-align: center;
+	}
+
+	div.nobelist-thumbnail {
+
+	float:      left;
+	width:      200;
+	height:     auto;
+	border:     1px solid #aaa;
+	background: #DFEDF7;
+	padding:    0em;
+	margin:     0.5em;
+	text-align: center;
+	font-color: #fff;
+
+	}
+	 /*  
+	   table {
+		   //width: auto;
+	}
+
+       div.name {
+           font-weight: bold;
+           font-size:   120%;
+       }
+
+       .relationship {
+           color:  #888;
+       }*/
+       
+
+
+   </style>
+	<script type="text/javascript">
+       function deceaseRowStyler(itemID, database, tr, rowIndex) {
+           var deceased = database.getObject(itemID, "deceased");
+           if (deceased == "yes") {
+               tr.style.backgroundColor = "#f88";
+           }
+       }
+   </script>
+</head> 
+<body>
+ 
+<div id="wrapper">  
+
+<ul id="path">
+  <li>Pia Pal</li>
+  <li><a href="http://spectacularspectacle.net/">Blog</a></li>
+  <li><a href="http://databench.zepheira.com/">Exhibit 3.0 Interactive Curriculum Vitae Tutorial</a></li>
+  <li><span>Projects and Coursework Demo</span></li>
+</ul>
+   
+<div id="sidebar">
+	<h3> MAGNOLIA SMITH </h3>
+
+	<div id="bio">
+	<p> To criticize does not necessarily imply "to find fault", but the word is often taken to mean the simple expression of an objection against prejudice, or a disapproval. Often criticism involves active disagreement, but it may only mean "taking sides". It could just be an exploration of the different sides of an issue. Fighting is not necessarily involved.
+
+</p>
+	</div>
+</div>
+
+<div id="main-content">
+       <div id="title-panel">
+
+           		<h3>PROJECTS AND COURSEWORK</h3>
+       </div>
+
+	<div id="top-panels">
+           <table width="100%" align=center><tr>
+               <td><div ex:role="facet" ex:expression=".discipline" ex:facetLabel="Discipline"></div></td>
+               <td><div ex:role="facet" ex:expression=".location" ex:facetLabel="Location"></div></td>
+           </tr></table>
+       </div>
+
+<!-- create checkbox fields for different criteria at the top of the page -->   
+       
+
+       <div ex:role="viewPanel" style="padding: 1em 0.5in;">
+           
+		   <table align="center" ex:role="lens" class="project" style="display: none;"><tr>
+               <td ><img align="middle" ex:src-content=".imageURL" /></td>
+               <td>
+                   <div ex:content=".label" class="name"></div>
+                   <div>
+                       <span ex:content=".discipline" class="discipline"></span>, 
+                       <i ex:content=".year"></i>
+                   </div>
+                   <div ex:if-exists=".co-winner" class="co-winners">
+                       Co-winners: <span ex:content=".co-winner"></span>
+                   </div>
+                   <div ex:content=".relationship-detail" class="relationship"></div>
+               </td>
+           </tr></table>
+
+           <div ex:role="view"
+               ex:viewClass="Thumbnail"
+               ex:showAll="true"
+               ex:possibleOrders=".label, .location, .discipline, .relationship, .shared, .deceased, .year">
+               <div ex:role="exhibit-lens" class="nobelist-thumbnail" style="display: none;">
+                   <img ex:src-content=".imageURL" />
+                   <div><span ex:content=".label"></span></div>
+                   <div>
+                       <span ex:content=".discipline" class="discipline"></span>, 
+                       <span ex:content=".year" class="year"></span>
+                   </div>
+               </div>
+           </div>
+
+		</div>
+		        
+</div></div>
+		  </body>
+		</html>

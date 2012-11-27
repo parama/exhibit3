@@ -1,0 +1,117 @@
+<!DOCTYPE html><html><head><title>database.js</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="./docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="./index.html" class="source"><span class="file_name">README</span></a><a href="./collection.js.html" class="source "><span class="base_path">. / </span><span class="file_name">collection.js</span></a><a href="./database.js.html" class="source selected"><span class="base_path">. / </span><span class="file_name">database.js</span></a><a href="./exporter.js.html" class="source "><span class="base_path">. / </span><span class="file_name">exporter.js</span></a><a href="./expression-parser.js.html" class="source "><span class="base_path">. / </span><span class="file_name">expression-parser.js</span></a><a href="./expression.js.html" class="source "><span class="base_path">. / </span><span class="file_name">expression.js</span></a><a href="./importer.js.html" class="source "><span class="base_path">. / </span><span class="file_name">importer.js</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>database.js</h1><div class="filepath">./</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@fileOverview Database interface and local implementation, with helper<br />              classes.</p></div><div class="details"></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@namespace Database layer of Exhibit.</p></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Database</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">defaultIgnoredProperties</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;uri&quot;</span><span class="p">,</span> <span class="s2">&quot;modified&quot;</span> <span class="p">]</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>Instantiate an Exhibit database object.</p></div><div class="details"></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Database</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Database</span><span class="p">[</span><span class="nx">type</span><span class="p">]</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Database</span><span class="p">[</span><span class="nx">type</span><span class="p">]();</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>warn?</p>
+</td><td class="code"><div class="highlight"><pre>        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Database</span><span class="p">.</span><span class="nx">_LocalImpl</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>Add or initialize an array entry in a two-level hash, such that<br />index[x][y].push(z), given z isn't already in index[x][y].</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>index </span><span class="dox_type">Object</span><span>- Base hash; may be modified as a side-effect.</span></div><div class="dox_tag_detail"><span>x </span><span class="dox_type">String</span><span>- First tier entry key in the base hash.</span></div><div class="dox_tag_detail"><span>y </span><span class="dox_type">String</span><span>- Second tier entry key in a subhash of the base hash.</span></div><div class="dox_tag_detail"><span>z </span><span class="dox_type">String</span><span>- Value to put into an array in the subhash key.</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Database</span><span class="p">.</span><span class="nx">_indexPut</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">hash</span><span class="p">,</span> <span class="nx">array</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+
+    <span class="nx">hash</span> <span class="o">=</span> <span class="nx">index</span><span class="p">[</span><span class="nx">x</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">hash</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">hash</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="nx">index</span><span class="p">[</span><span class="nx">x</span><span class="p">]</span> <span class="o">=</span> <span class="nx">hash</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">array</span> <span class="o">=</span> <span class="nx">hash</span><span class="p">[</span><span class="nx">y</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">array</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">array</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">hash</span><span class="p">[</span><span class="nx">y</span><span class="p">]</span> <span class="o">=</span> <span class="nx">array</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">z</span> <span class="o">===</span> <span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">z</span><span class="p">);</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>Add or initialize an array entry in a two-level hash, such that<br />index[x][y] = list if undefined or index[x][y].concat(list) if already<br />defined. </p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>index </span><span class="dox_type">Object</span><span>- Base hash; may be modified as a side-effect.</span></div><div class="dox_tag_detail"><span>x </span><span class="dox_type">String</span><span>- First tier entry key in the base hash.</span></div><div class="dox_tag_detail"><span>y </span><span class="dox_type">String</span><span>- Second tier entry key in a subhash of the base hash.</span></div><div class="dox_tag_detail"><span>list </span><span class="dox_type">Array</span><span>- List of values to add or assign to the subhash key.</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Database</span><span class="p">.</span><span class="nx">_indexPutList</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">hash</span><span class="p">,</span> <span class="nx">array</span><span class="p">;</span>
+
+    <span class="nx">hash</span> <span class="o">=</span> <span class="nx">index</span><span class="p">[</span><span class="nx">x</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">hash</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">hash</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="nx">index</span><span class="p">[</span><span class="nx">x</span><span class="p">]</span> <span class="o">=</span> <span class="nx">hash</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="nx">array</span> <span class="o">=</span> <span class="nx">hash</span><span class="p">[</span><span class="nx">y</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">array</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">hash</span><span class="p">[</span><span class="nx">y</span><span class="p">]</span> <span class="o">=</span> <span class="nx">list</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">hash</span><span class="p">[</span><span class="nx">y</span><span class="p">]</span> <span class="o">=</span> <span class="nx">hash</span><span class="p">[</span><span class="nx">y</span><span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nx">list</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>Remove the element z from the array index[x][y]; also remove<br />index[x][y] if the array becomes empty and index[x] if the hash becomes<br />empty as a result.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>index </span><span class="dox_type">Object</span><span>- Base hash; may be modified as a side-effect.</span></div><div class="dox_tag_detail"><span>x </span><span class="dox_type">String</span><span>- First tier entry key in the base hash.</span></div><div class="dox_tag_detail"><span>y </span><span class="dox_type">String</span><span>- Second tier entry key in a subhash of the base hash.</span></div><div class="dox_tag_detail"><span>z </span><span class="dox_type">String</span><span>- Value to remove from an array in the subhash key.</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Database</span><span class="p">.</span><span class="nx">_indexRemove</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">hash</span><span class="p">,</span> <span class="nx">array</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">prop</span><span class="p">,</span> <span class="nx">empty</span><span class="p">;</span>
+
+    <span class="nx">hash</span> <span class="o">=</span> <span class="nx">index</span><span class="p">[</span><span class="nx">x</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">hash</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">array</span> <span class="o">=</span> <span class="nx">hash</span><span class="p">[</span><span class="nx">y</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">array</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">z</span> <span class="o">===</span> <span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
+            <span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">delete</span> <span class="nx">hash</span><span class="p">[</span><span class="nx">y</span><span class="p">];</span>
+
+                <span class="nx">empty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+                <span class="k">for</span> <span class="p">(</span><span class="nx">prop</span> <span class="k">in</span> <span class="nx">hash</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">hash</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">prop</span><span class="p">))</span> <span class="p">{</span>
+                        <span class="nx">empty</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">empty</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">delete</span> <span class="nx">index</span><span class="p">[</span><span class="nx">x</span><span class="p">];</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>Removes index[x][y] and index[x] if it becomes empty.</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>index </span><span class="dox_type">Object</span><span>- Base hash; may be modified as a side-effect.</span></div><div class="dox_tag_detail"><span>x </span><span class="dox_type">String</span><span>- First tier entry key in the base hash.</span></div><div class="dox_tag_detail"><span>y </span><span class="dox_type">String</span><span>- Second tier entry key in a subhash of the base hash.</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Database</span><span class="p">.</span><span class="nx">_indexRemoveList</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">hash</span><span class="p">,</span> <span class="nx">array</span><span class="p">,</span> <span class="nx">prop</span><span class="p">,</span> <span class="nx">empty</span><span class="p">;</span>
+
+    <span class="nx">hash</span> <span class="o">=</span> <span class="nx">index</span><span class="p">[</span><span class="nx">x</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">hash</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">array</span> <span class="o">=</span> <span class="nx">hash</span><span class="p">[</span><span class="nx">y</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">array</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">delete</span> <span class="nx">hash</span><span class="p">[</span><span class="nx">y</span><span class="p">];</span>
+
+    <span class="nx">empty</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">prop</span> <span class="k">in</span> <span class="nx">hash</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">hash</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">prop</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">empty</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">empty</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">delete</span> <span class="nx">index</span><span class="p">[</span><span class="nx">x</span><span class="p">];</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nx">array</span><span class="p">;</span>
+<span class="p">};</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Tue Aug 14 2012 19:29:06 GMT-0400 (EDT)  </div></div></body></html>

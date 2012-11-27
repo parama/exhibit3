@@ -1,0 +1,333 @@
+<!DOCTYPE html><html><head><title>functions.js</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="./docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="./index.html" class="source"><span class="file_name">README</span></a><a href="./collection.js.html" class="source "><span class="base_path">. / </span><span class="file_name">collection.js</span></a><a href="./constant.js.html" class="source "><span class="base_path">. / </span><span class="file_name">constant.js</span></a><a href="./control-call.js.html" class="source "><span class="base_path">. / </span><span class="file_name">control-call.js</span></a><a href="./controls.js.html" class="source "><span class="base_path">. / </span><span class="file_name">controls.js</span></a><a href="./function-call.js.html" class="source "><span class="base_path">. / </span><span class="file_name">function-call.js</span></a><a href="./functions.js.html" class="source selected"><span class="base_path">. / </span><span class="file_name">functions.js</span></a><a href="./operator.js.html" class="source "><span class="base_path">. / </span><span class="file_name">operator.js</span></a><a href="./path.js.html" class="source "><span class="base_path">. / </span><span class="file_name">path.js</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>functions.js</h1><div class="filepath">./</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@fileOverview Implementation of query language function features.</p></div><div class="details"></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@namespace</p></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span> <span class="o">=</span> <span class="p">{};</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@namespace</p></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">FunctionUtilities</span> <span class="o">=</span> <span class="p">{};</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@static</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>name </span><span class="dox_type">String</span></div><div class="dox_tag_detail"><span>f </span><span class="dox_type">Function</span></div><div class="dox_tag_detail"><span>valueType </span><span class="dox_type">String</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">FunctionUtilities</span><span class="p">.</span><span class="nx">registerSimpleMappingFunction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">valueType</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">set</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Set</span><span class="p">(),</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">fn</span><span class="p">;</span>
+            <span class="nx">fn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="kd">var</span> <span class="nx">v2</span> <span class="o">=</span> <span class="nx">f</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">v2</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">set</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">v2</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">};</span>
+            <span class="p">};</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">forEachValue</span><span class="p">(</span><span class="nx">fn</span><span class="p">());</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">(</span><span class="nx">set</span><span class="p">,</span> <span class="nx">valueType</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;union&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">set</span><span class="p">,</span> <span class="nx">valueType</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">arg</span><span class="p">;</span>
+        <span class="nx">set</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Set</span><span class="p">();</span>
+        <span class="nx">valueType</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">valueType</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">valueType</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">arg</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">arg</span><span class="p">.</span><span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">valueType</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">||</span> <span class="nx">valueType</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">valueType</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">valueType</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="nx">set</span><span class="p">.</span><span class="nx">addSet</span><span class="p">(</span><span class="nx">arg</span><span class="p">.</span><span class="nx">getSet</span><span class="p">());</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">(</span><span class="nx">set</span><span class="p">,</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">valueType</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">valueType</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="o">?</span> <span class="nx">valueType</span> <span class="o">:</span> <span class="s2">&quot;text&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;contains&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">set</span><span class="p">;</span>
+        <span class="nx">result</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nx">set</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">getSet</span><span class="p">();</span>
+        
+        <span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">forEachValue</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">set</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">result</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+        
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="nx">result</span> <span class="p">],</span> <span class="s2">&quot;boolean&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;exists&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">],</span> <span class="s2">&quot;boolean&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">size</span> <span class="p">],</span> <span class="s2">&quot;number&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;not&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="o">!</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">contains</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">],</span> <span class="s2">&quot;boolean&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;and&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">r</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">r</span> <span class="o">=</span> <span class="nx">r</span> <span class="o">&amp;&amp;</span> <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">contains</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="nx">r</span> <span class="p">],</span> <span class="s2">&quot;boolean&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;or&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">!</span><span class="nx">r</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">r</span> <span class="o">=</span> <span class="nx">r</span> <span class="o">||</span> <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">contains</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="nx">r</span> <span class="p">],</span> <span class="s2">&quot;boolean&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;add&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">total</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">fn</span><span class="p">;</span>
+        <span class="nx">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nx">fn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">v</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">v</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">v</span> <span class="o">===</span> <span class="s2">&quot;number&quot;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">total</span> <span class="o">+=</span> <span class="nx">v</span><span class="p">;</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span> <span class="p">{</span>
+                            <span class="nx">total</span> <span class="o">+=</span> <span class="nx">n</span><span class="p">;</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">};</span>
+        <span class="p">};</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">forEachValue</span><span class="p">(</span><span class="nx">fn</span><span class="p">());</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="nx">total</span> <span class="p">],</span> <span class="s2">&quot;number&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>Note: arguments expanding to multiple items get concatenated in random order</p>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;concat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[],</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">fn</span><span class="p">;</span>
+        <span class="nx">fn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">v</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">v</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">};</span>
+        <span class="p">};</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">forEachValue</span><span class="p">(</span><span class="nx">fn</span><span class="p">());</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="nx">result</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">],</span> <span class="s2">&quot;text&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;multiply&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">product</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">fn</span><span class="p">;</span>
+        <span class="nx">fn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">n</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">v</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">v</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">v</span> <span class="o">===</span> <span class="s2">&quot;number&quot;</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">product</span> <span class="o">*=</span> <span class="nx">v</span><span class="p">;</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="nx">n</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span> <span class="p">{</span>
+                            <span class="nx">product</span> <span class="o">*=</span> <span class="nx">n</span><span class="p">;</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">};</span>
+        <span class="p">};</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">forEachValue</span><span class="p">(</span><span class="nx">fn</span><span class="p">());</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="nx">product</span> <span class="p">],</span> <span class="s2">&quot;number&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;date-range&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">_parseDate</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">v</span> <span class="o">===</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">||</span> <span class="nx">v</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">Number</span><span class="p">.</span><span class="nx">NEGATIVE_INFINITY</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">v</span> <span class="k">instanceof</span> <span class="nb">Date</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">v</span><span class="p">.</span><span class="nx">getTime</span><span class="p">();</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">try</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">DateTime</span><span class="p">.</span><span class="nx">parseIso8601DateTime</span><span class="p">(</span><span class="nx">v</span><span class="p">).</span><span class="nx">getTime</span><span class="p">();</span>
+            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">Number</span><span class="p">.</span><span class="nx">NEGATIVE_INFINITY</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">_computeRange</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">interval</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">range</span> <span class="o">=</span> <span class="nx">to</span> <span class="o">-</span> <span class="nx">from</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isFinite</span><span class="p">(</span><span class="nx">range</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">DateTime</span><span class="p">[</span><span class="nx">interval</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()]</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">range</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">range</span> <span class="o">/</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">DateTime</span><span class="p">.</span><span class="nx">gregorianUnitLengths</span><span class="p">[</span><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">DateTime</span><span class="p">[</span><span class="nx">interval</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()]]);</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">range</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">interval</span><span class="p">,</span> <span class="nx">range</span><span class="p">;</span>
+        
+        <span class="nx">from</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">.</span><span class="nx">POSITIVE_INFINITY</span><span class="p">;</span>
+        <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">forEachValue</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">from</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_parseDate</span><span class="p">(</span><span class="nx">v</span><span class="p">));</span>
+        <span class="p">});</span>
+        
+        <span class="nx">to</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">.</span><span class="nx">NEGATIVE_INFINITY</span><span class="p">;</span>
+        <span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">forEachValue</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">to</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_parseDate</span><span class="p">(</span><span class="nx">v</span><span class="p">));</span>
+        <span class="p">});</span>
+        
+        <span class="nx">interval</span> <span class="o">=</span> <span class="s2">&quot;day&quot;</span><span class="p">;</span>
+        <span class="nx">args</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">forEachValue</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">interval</span> <span class="o">=</span> <span class="nx">v</span><span class="p">;</span>
+        <span class="p">});</span>
+            
+        <span class="nx">range</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_computeRange</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">interval</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">((</span><span class="k">typeof</span> <span class="nx">range</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">range</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="o">?</span> <span class="p">[</span> <span class="nx">range</span> <span class="p">]</span> <span class="o">:</span> <span class="p">[],</span> <span class="s2">&quot;number&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">_units</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">km</span><span class="o">:</span>         <span class="mi">1</span><span class="nx">e3</span><span class="p">,</span>
+        <span class="nx">mile</span><span class="o">:</span>       <span class="mf">1609.344</span>
+    <span class="p">},</span>
+    <span class="nx">_computeDistance</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">unit</span><span class="p">,</span> <span class="nx">roundTo</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">range</span> <span class="o">=</span> <span class="nx">from</span><span class="p">.</span><span class="nx">distanceFrom</span><span class="p">(</span><span class="nx">to</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">roundTo</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">roundTo</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isFinite</span><span class="p">(</span><span class="nx">range</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="k">this</span><span class="p">.</span><span class="nx">_units</span><span class="p">[</span><span class="nx">unit</span><span class="p">]</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">range</span> <span class="o">=</span> <span class="nx">range</span> <span class="o">/</span> <span class="k">this</span><span class="p">.</span><span class="nx">_units</span><span class="p">[</span><span class="nx">unit</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Util</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">range</span><span class="p">,</span> <span class="nx">roundTo</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">latlng</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">range</span><span class="p">,</span> <span class="nx">fn</span><span class="p">;</span>
+        <span class="nx">data</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="nx">name</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;origo&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lng&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="s2">&quot;round&quot;</span><span class="p">];</span>
+        <span class="nx">fn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">nm</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">data</span><span class="p">[</span><span class="nx">nm</span><span class="p">]</span> <span class="o">=</span> <span class="nx">v</span><span class="p">;</span>
+            <span class="p">};</span>
+        <span class="p">};</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">name</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">name</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">forEachValue</span><span class="p">(</span><span class="nx">fn</span><span class="p">(</span><span class="nx">n</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="nx">latlng</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">origo</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">);</span>
+        <span class="nx">from</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GLatLng</span><span class="p">(</span> <span class="nx">latlng</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">latlng</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">);</span>
+        <span class="nx">to</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GLatLng</span><span class="p">(</span> <span class="nx">data</span><span class="p">.</span><span class="nx">lat</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">lng</span> <span class="p">);</span>
+        
+        <span class="nx">range</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_computeDistance</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">unit</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">round</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">((</span><span class="k">typeof</span> <span class="nx">range</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">range</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="o">?</span> <span class="p">[</span> <span class="nx">range</span> <span class="p">]</span> <span class="o">:</span> <span class="p">[],</span> <span class="s2">&quot;number&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@ignore</p></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre>        <span class="kd">var</span> <span class="nx">returnMe</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">val</span><span class="p">;</span> <span class="p">},</span> <span class="nx">min</span><span class="p">,</span> <span class="nx">valueType</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">arg</span><span class="p">,</span> <span class="nx">currentValueType</span><span class="p">,</span> <span class="nx">parser</span><span class="p">,</span> <span class="nx">fn</span><span class="p">;</span>
+        <span class="nx">min</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">.</span><span class="nx">POSITIVE_INFINITY</span><span class="p">;</span>
+        <span class="nx">valueType</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="nx">fn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">parsedV</span> <span class="o">=</span> <span class="nx">p</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">returnMe</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">parsedV</span> <span class="o">&lt;</span> <span class="nx">min</span> <span class="o">||</span> <span class="nx">min</span> <span class="o">===</span> <span class="nb">Number</span><span class="p">.</span><span class="nx">POSITIVE_INFINITY</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">min</span> <span class="o">=</span> <span class="nx">parsedV</span><span class="p">;</span>
+                    <span class="nx">valueType</span> <span class="o">=</span> <span class="p">(</span><span class="nx">valueType</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="o">?</span> <span class="nx">c</span> <span class="o">:</span> 
+                        <span class="p">(</span><span class="nx">valueType</span> <span class="o">===</span> <span class="nx">c</span> <span class="o">?</span> <span class="nx">valueType</span> <span class="o">:</span> <span class="s2">&quot;text&quot;</span><span class="p">)</span> <span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">};</span>
+        <span class="p">};</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">arg</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="nx">currentValueType</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">valueType</span> <span class="o">?</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">valueType</span> <span class="o">:</span> <span class="s1">&#39;text&#39;</span><span class="p">;</span>
+            <span class="nx">parser</span> <span class="o">=</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">SettingsUtilities</span><span class="p">.</span><span class="nx">_typeToParser</span><span class="p">(</span><span class="nx">currentValueType</span><span class="p">);</span>
+                
+            <span class="nx">arg</span><span class="p">.</span><span class="nx">forEachValue</span><span class="p">(</span><span class="nx">fn</span><span class="p">(</span><span class="nx">parser</span><span class="p">,</span> <span class="nx">currentValueType</span><span class="p">));</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="nx">min</span> <span class="p">],</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">valueType</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">valueType</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="o">?</span> <span class="nx">valueType</span> <span class="o">:</span> <span class="s2">&quot;text&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">returnMe</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">val</span><span class="p">;</span> <span class="p">},</span> <span class="nx">max</span><span class="p">,</span> <span class="nx">valueType</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">arg</span><span class="p">,</span> <span class="nx">currentValueType</span><span class="p">,</span> <span class="nx">parser</span><span class="p">,</span> <span class="nx">fn</span><span class="p">;</span>
+        <span class="nx">max</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">.</span><span class="nx">NEGATIVE_INFINITY</span><span class="p">;</span>
+        <span class="nx">valueType</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="nx">fn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">parsedV</span> <span class="o">=</span> <span class="nx">p</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">returnMe</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">parsedV</span> <span class="o">&gt;</span> <span class="nx">max</span> <span class="o">||</span> <span class="nx">max</span> <span class="o">===</span> <span class="nb">Number</span><span class="p">.</span><span class="nx">NEGATIVE_INFINITY</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">max</span> <span class="o">=</span> <span class="nx">parsedV</span><span class="p">;</span>
+                    <span class="nx">valueType</span> <span class="o">=</span> <span class="p">(</span><span class="nx">valueType</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="o">?</span> <span class="nx">c</span> <span class="o">:</span> 
+                        <span class="p">(</span><span class="nx">valueType</span> <span class="o">===</span> <span class="nx">c</span> <span class="o">?</span> <span class="nx">valueType</span> <span class="o">:</span> <span class="s2">&quot;text&quot;</span><span class="p">)</span> <span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">};</span>
+        <span class="p">};</span>
+        
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">arg</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="nx">currentValueType</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">valueType</span> <span class="o">?</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">valueType</span> <span class="o">:</span> <span class="s1">&#39;text&#39;</span><span class="p">;</span>
+            <span class="nx">parser</span> <span class="o">=</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">SettingsUtilities</span><span class="p">.</span><span class="nx">_typeToParser</span><span class="p">(</span><span class="nx">currentValueType</span><span class="p">);</span>
+            
+            <span class="nx">arg</span><span class="p">.</span><span class="nx">forEachValue</span><span class="p">(</span><span class="nx">fn</span><span class="p">(</span><span class="nx">parser</span><span class="p">,</span> <span class="nx">c</span><span class="p">));</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="nx">max</span> <span class="p">],</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">valueType</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">valueType</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="o">?</span> <span class="nx">valueType</span> <span class="o">:</span> <span class="s2">&quot;text&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;remove&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">set</span><span class="p">,</span> <span class="nx">valueType</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">arg</span><span class="p">;</span>
+        <span class="nx">set</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">getSet</span><span class="p">();</span>
+        <span class="nx">valueType</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">valueType</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">arg</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">arg</span><span class="p">.</span><span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">set</span><span class="p">.</span><span class="nx">removeSet</span><span class="p">(</span><span class="nx">arg</span><span class="p">.</span><span class="nx">getSet</span><span class="p">());</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">(</span><span class="nx">set</span><span class="p">,</span> <span class="nx">valueType</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Functions</span><span class="p">[</span><span class="s2">&quot;now&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()</span> <span class="p">],</span> <span class="s2">&quot;date&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Tue Aug 14 2012 19:28:48 GMT-0400 (EDT)  </div></div></body></html>

@@ -18,6 +18,7 @@ Exhibit.Database = {
  * @static
  * @returns {Object}
  */
+/*default behavior: if the user doesn't specify otherwise, exhibit scripted in-browser database is instantiated*/
 Exhibit.Database.create = function(type) {
     if (typeof Exhibit.Database[type] !== "undefined") {
         return new Exhibit.Database[type]();

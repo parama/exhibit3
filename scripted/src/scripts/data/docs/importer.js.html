@@ -1,0 +1,196 @@
+<!DOCTYPE html><html><head><title>importer.js</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="./docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="./index.html" class="source"><span class="file_name">README</span></a><a href="./collection.js.html" class="source "><span class="base_path">. / </span><span class="file_name">collection.js</span></a><a href="./database.js.html" class="source "><span class="base_path">. / </span><span class="file_name">database.js</span></a><a href="./exporter.js.html" class="source "><span class="base_path">. / </span><span class="file_name">exporter.js</span></a><a href="./expression-parser.js.html" class="source "><span class="base_path">. / </span><span class="file_name">expression-parser.js</span></a><a href="./expression.js.html" class="source "><span class="base_path">. / </span><span class="file_name">expression.js</span></a><a href="./importer.js.html" class="source selected"><span class="base_path">. / </span><span class="file_name">importer.js</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>importer.js</h1><div class="filepath">./</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@fileOverview General class for data importer.</p></div><div class="details"></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@class</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>mimeType </span><span class="dox_type">String</span><span class="dox_type">Array</span></div><div class="dox_tag_detail"><span>loadType </span><span class="dox_type">String</span></div><div class="dox_tag_detail"><span>label </span><span class="dox_type">String</span></div><div class="dox_tag_detail"><span>parse </span><span class="dox_type">Function</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mimeType</span><span class="p">,</span> <span class="nx">loadType</span><span class="p">,</span> <span class="nx">parse</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">mimeType</span> <span class="o">===</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_mimeTypes</span> <span class="o">=</span> <span class="p">[</span><span class="nx">mimeType</span><span class="p">];</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_mimeTypes</span> <span class="o">=</span> <span class="nx">mimeType</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_loadType</span> <span class="o">=</span> <span class="nx">loadType</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_parse</span> <span class="o">=</span> <span class="nx">parse</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_registered</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">register</span><span class="p">();</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@private</p></div><div class="details"></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registryKey</span> <span class="o">=</span> <span class="s2">&quot;importer&quot;</span><span class="p">;</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@private</p></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registry</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@static</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>ex </span><span class="dox_type">Exhibit._Impl</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registerComponent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">,</span> <span class="nx">reg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registry</span> <span class="o">=</span> <span class="nx">reg</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">reg</span><span class="p">.</span><span class="nx">hasRegistry</span><span class="p">(</span><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registryKey</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">reg</span><span class="p">.</span><span class="nx">createRegistry</span><span class="p">(</span><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registryKey</span><span class="p">);</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;registerImporters.exhibit&quot;</span><span class="p">,</span> <span class="nx">reg</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@static</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>mimeType </span><span class="dox_type">String</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">getImporter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mimeType</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registry</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registryKey</span><span class="p">,</span>
+        <span class="nx">mimeType</span>
+    <span class="p">);</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@static</p></div><div class="details"></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">checkFileURL</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">url</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s2">&quot;file:&quot;</span><span class="p">);</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@returns {Boolean}</p></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">register</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">reg</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">registered</span><span class="p">;</span>
+    <span class="nx">reg</span> <span class="o">=</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registry</span><span class="p">;</span>
+    <span class="nx">registered</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_mimeTypes</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">reg</span><span class="p">.</span><span class="nx">isRegistered</span><span class="p">(</span>
+            <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registryKey</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_mimeTypes</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+        <span class="p">))</span> <span class="p">{</span>
+            <span class="nx">reg</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span>
+                <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registryKey</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_mimeTypes</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span>
+                <span class="k">this</span>
+            <span class="p">);</span>
+            <span class="nx">registered</span> <span class="o">=</span> <span class="nx">registered</span> <span class="o">||</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">registered</span> <span class="o">=</span> <span class="nx">registered</span> <span class="o">||</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">registered</span><span class="p">;</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">dispose</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_mimeTypes</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registry</span><span class="p">.</span><span class="nx">unregister</span><span class="p">(</span>
+            <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registryKey</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_mimeTypes</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@returns {Boolean}</p></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isRegistered</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_registered</span><span class="p">;</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@param {String} type</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>link </span><span class="dox_type">Element</span><span class="dox_type">String</span></div><div class="dox_tag_detail"><span>database </span><span class="dox_type">Exhibit.Database</span></div><div class="dox_tag_detail"><span>callback </span><span class="dox_type">Function</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">load</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">link</span><span class="p">,</span> <span class="nx">database</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">resolver</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">postLoad</span><span class="p">,</span> <span class="nx">postParse</span><span class="p">,</span> <span class="nx">self</span><span class="p">;</span>
+    <span class="nx">url</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">link</span> <span class="o">===</span> <span class="s2">&quot;string&quot;</span> <span class="o">?</span> <span class="nx">link</span> <span class="o">:</span> <span class="nx">$</span><span class="p">(</span><span class="nx">link</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">);</span>
+    <span class="nx">url</span> <span class="o">=</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Persistence</span><span class="p">.</span><span class="nx">resolveURL</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+
+    <span class="k">switch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_loadType</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="s2">&quot;babel&quot;</span><span class="o">:</span>
+        <span class="nx">resolver</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_loadBabel</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="s2">&quot;jsonp&quot;</span><span class="o">:</span>
+        <span class="nx">resolver</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_loadJSONP</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">default</span><span class="o">:</span>
+        <span class="nx">resolver</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_loadURL</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">postParse</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="nx">database</span><span class="p">.</span><span class="nx">loadData</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Persistence</span><span class="p">.</span><span class="nx">getBaseURL</span><span class="p">(</span><span class="nx">url</span><span class="p">));</span>
+        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Debug</span><span class="p">.</span><span class="nx">exception</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+            <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;error.exhibit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nx">e</span><span class="p">,</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">_</span><span class="p">(</span><span class="s2">&quot;%import.couldNotLoad&quot;</span><span class="p">,</span> <span class="nx">url</span><span class="p">)]);</span>
+        <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">callback</span> <span class="o">===</span> <span class="s2">&quot;function&quot;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">callback</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+    <span class="nx">postLoad</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">textStatus</span><span class="p">,</span> <span class="nx">jqxhr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">UI</span><span class="p">.</span><span class="nx">hideBusyIndicator</span><span class="p">();</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">_parse</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">s</span><span class="p">,</span> <span class="nx">postParse</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;error.exhibit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nx">e</span><span class="p">,</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">_</span><span class="p">(</span><span class="s2">&quot;%import.couldNotParse&quot;</span><span class="p">,</span> <span class="nx">url</span><span class="p">)]);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">UI</span><span class="p">.</span><span class="nx">showBusyIndicator</span><span class="p">();</span>
+    <span class="nx">resolver</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">database</span><span class="p">,</span> <span class="nx">postLoad</span><span class="p">,</span> <span class="nx">link</span><span class="p">);</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a href="#section-12" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@param {String} url</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>database </span><span class="dox_type">Exhibit.Database</span></div><div class="dox_tag_detail"><span>callback </span><span class="dox_type">Function</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_loadURL</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">database</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">fError</span><span class="p">,</span> <span class="nx">self</span><span class="p">;</span>
+
+    <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+    <span class="nx">fError</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">jqxhr</span><span class="p">,</span> <span class="nx">textStatus</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">msg</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">checkFileURL</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">jqxhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">404</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">msg</span> <span class="o">=</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">_</span><span class="p">(</span><span class="s2">&quot;%import.missingOrFilesystem&quot;</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">msg</span> <span class="o">=</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">_</span><span class="p">(</span><span class="s2">&quot;%import.httpError&quot;</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">jqxhr</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;error.exhibit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nx">e</span><span class="p">,</span> <span class="nx">msg</span><span class="p">]);</span>
+    <span class="p">};</span>
+
+    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+        <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="nx">url</span><span class="p">,</span>
+        <span class="s2">&quot;dataType&quot;</span><span class="o">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;error&quot;</span><span class="o">:</span> <span class="nx">fError</span><span class="p">,</span>
+        <span class="s2">&quot;success&quot;</span><span class="o">:</span> <span class="nx">callback</span>
+    <span class="p">});</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@param {String} url</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>database </span><span class="dox_type">Exhibit.Database</span></div><div class="dox_tag_detail"><span>callback </span><span class="dox_type">Function</span></div><div class="dox_tag_detail"><span>link </span><span class="dox_type">Element</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_loadJSONP</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">database</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">link</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">charset</span><span class="p">,</span> <span class="nx">convertType</span><span class="p">,</span> <span class="nx">jsonpCallback</span><span class="p">,</span> <span class="nx">converter</span><span class="p">,</span> <span class="nx">fDone</span><span class="p">,</span> <span class="nx">ajaxArgs</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">link</span> <span class="o">!==</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">convertType</span> <span class="o">=</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="nx">link</span><span class="p">,</span> <span class="s2">&quot;converter&quot;</span><span class="p">);</span>
+        <span class="nx">jsonpCallback</span> <span class="o">=</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="nx">link</span><span class="p">,</span> <span class="s2">&quot;jsonp-callback&quot;</span><span class="p">);</span>
+        <span class="nx">charset</span> <span class="o">=</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="nx">link</span><span class="p">,</span> <span class="s2">&quot;charset&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">converter</span> <span class="o">=</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registry</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">JSONP</span><span class="p">.</span><span class="nx">_registryKey</span><span class="p">,</span>
+        <span class="nx">convertType</span>
+    <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">converter</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="k">typeof</span> <span class="nx">converter</span><span class="p">.</span><span class="nx">preprocessURL</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">url</span> <span class="o">=</span> <span class="nx">converter</span><span class="p">.</span><span class="nx">preprocessURL</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="nx">fDone</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">textStatus</span><span class="p">,</span> <span class="nx">jqxhr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">callback</span><span class="p">(</span><span class="nx">converter</span><span class="p">.</span><span class="nx">transformJSON</span><span class="p">(</span><span class="nx">s</span><span class="p">),</span> <span class="nx">textStatus</span><span class="p">,</span> <span class="nx">jqxhr</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="nx">fError</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">jqxhr</span><span class="p">,</span> <span class="nx">textStatus</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">msg</span><span class="p">;</span>
+        <span class="nx">msg</span> <span class="o">=</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">_</span><span class="p">(</span>
+            <span class="s2">&quot;%import.failedAccess&quot;</span><span class="p">,</span>
+            <span class="nx">url</span><span class="p">,</span>
+            <span class="p">(</span><span class="k">typeof</span> <span class="nx">jqxhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">!==</span> <span class="s2">&quot;undefined&quot;</span><span class="p">)</span> <span class="o">?</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">_</span><span class="p">(</span><span class="s2">&quot;%import.failedAccessHttpStatus&quot;</span><span class="p">,</span> <span class="nx">jqxhr</span><span class="p">.</span><span class="nx">status</span><span class="p">)</span> <span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">);</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;error.exhibit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nx">e</span><span class="p">,</span> <span class="nx">msg</span><span class="p">]);</span>
+    <span class="p">};</span>
+
+    <span class="nx">ajaxArgs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="nx">url</span><span class="p">,</span>
+        <span class="s2">&quot;dataType&quot;</span><span class="o">:</span> <span class="s2">&quot;jsonp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;success&quot;</span><span class="o">:</span> <span class="nx">fDone</span><span class="p">,</span>
+        <span class="s2">&quot;error&quot;</span><span class="o">:</span> <span class="nx">fError</span>
+    <span class="p">};</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">jsonpCallback</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">ajaxArgs</span><span class="p">.</span><span class="nx">jsonp</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="nx">ajaxArgs</span><span class="p">.</span><span class="nx">jsonpCallback</span> <span class="o">=</span> <span class="nx">jsonpCallback</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">charset</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">ajaxArgs</span><span class="p">.</span><span class="nx">scriptCharset</span> <span class="o">=</span> <span class="nx">charset</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="nx">ajaxArgs</span><span class="p">);</span>
+<span class="p">};</span></pre></div></td></tr><tr id="section-14"><td class="docs"><div class="pilwrap"><a href="#section-14" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@param {String} url</p></div><div class="details"><div class="dox_tag_title">Params</div><div class="dox_tag_detail"><span>database </span><span class="dox_type">Exhibit.Database</span></div><div class="dox_tag_detail"><span>callback </span><span class="dox_type">Function</span></div><div class="dox_tag_detail"><span>link </span><span class="dox_type">Element</span></div></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_loadBabel</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">database</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">link</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">mimeType</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">link</span> <span class="o">!==</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">mimeType</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">link</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_loadJSONP</span><span class="p">(</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">BabelBased</span><span class="p">.</span><span class="nx">makeURL</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">mimeType</span><span class="p">),</span>
+        <span class="nx">database</span><span class="p">,</span>
+        <span class="nx">callback</span><span class="p">,</span>
+        <span class="nx">link</span>
+    <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">one</span><span class="p">(</span>
+    <span class="s2">&quot;registerStaticComponents.exhibit&quot;</span><span class="p">,</span>
+    <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Importer</span><span class="p">.</span><span class="nx">_registerComponent</span>
+<span class="p">);</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Tue Aug 14 2012 19:29:07 GMT-0400 (EDT)  </div></div></body></html>

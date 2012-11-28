@@ -1,0 +1,118 @@
+<!DOCTYPE html><html><head><title>controls.js</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="./docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="./index.html" class="source"><span class="file_name">README</span></a><a href="./collection.js.html" class="source "><span class="base_path">. / </span><span class="file_name">collection.js</span></a><a href="./constant.js.html" class="source "><span class="base_path">. / </span><span class="file_name">constant.js</span></a><a href="./control-call.js.html" class="source "><span class="base_path">. / </span><span class="file_name">control-call.js</span></a><a href="./controls.js.html" class="source selected"><span class="base_path">. / </span><span class="file_name">controls.js</span></a><a href="./function-call.js.html" class="source "><span class="base_path">. / </span><span class="file_name">function-call.js</span></a><a href="./functions.js.html" class="source "><span class="base_path">. / </span><span class="file_name">functions.js</span></a><a href="./operator.js.html" class="source "><span class="base_path">. / </span><span class="file_name">operator.js</span></a><a href="./path.js.html" class="source "><span class="base_path">. / </span><span class="file_name">path.js</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>controls.js</h1><div class="filepath">./</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@fileOverview Implementation of query language control features.</p></div><div class="details"></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@namespace</p></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Controls</span> <span class="o">=</span> <span class="p">{};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Controls</span><span class="p">[</span><span class="s2">&quot;if&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+        <span class="nx">args</span><span class="p">,</span>
+        <span class="nx">roots</span><span class="p">,</span> 
+        <span class="nx">rootValueTypes</span><span class="p">,</span> 
+        <span class="nx">defaultRootName</span><span class="p">,</span> 
+        <span class="nx">database</span>
+    <span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">conditionCollection</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">roots</span><span class="p">,</span> <span class="nx">rootValueTypes</span><span class="p">,</span> <span class="nx">defaultRootName</span><span class="p">,</span> <span class="nx">database</span><span class="p">),</span> <span class="nx">condition</span><span class="p">;</span>
+        <span class="nx">condition</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="nx">conditionCollection</span><span class="p">.</span><span class="nx">forEachValue</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">condition</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">roots</span><span class="p">,</span> <span class="nx">rootValueTypes</span><span class="p">,</span> <span class="nx">defaultRootName</span><span class="p">,</span> <span class="nx">database</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">args</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">roots</span><span class="p">,</span> <span class="nx">rootValueTypes</span><span class="p">,</span> <span class="nx">defaultRootName</span><span class="p">,</span> <span class="nx">database</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Controls</span><span class="p">[</span><span class="s2">&quot;foreach&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+        <span class="nx">args</span><span class="p">,</span>
+        <span class="nx">roots</span><span class="p">,</span> 
+        <span class="nx">rootValueTypes</span><span class="p">,</span> 
+        <span class="nx">defaultRootName</span><span class="p">,</span> 
+        <span class="nx">database</span>
+    <span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">collection</span><span class="p">,</span> <span class="nx">oldValue</span><span class="p">,</span> <span class="nx">oldValueType</span><span class="p">,</span> <span class="nx">results</span><span class="p">,</span> <span class="nx">valueType</span><span class="p">;</span>
+        <span class="nx">collection</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">roots</span><span class="p">,</span> <span class="nx">rootValueTypes</span><span class="p">,</span> <span class="nx">defaultRootName</span><span class="p">,</span> <span class="nx">database</span><span class="p">);</span>
+        
+        <span class="nx">oldValue</span> <span class="o">=</span> <span class="nx">roots</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">];</span>
+        <span class="nx">oldValueType</span> <span class="o">=</span> <span class="nx">rootValueTypes</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">];</span>
+        <span class="nx">rootValueTypes</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">collection</span><span class="p">.</span><span class="nx">valueType</span><span class="p">;</span>
+        
+        <span class="nx">results</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">valueType</span> <span class="o">=</span> <span class="s2">&quot;text&quot;</span><span class="p">;</span>
+        
+        <span class="nx">collection</span><span class="p">.</span><span class="nx">forEachValue</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">roots</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">element</span><span class="p">;</span>
+            
+            <span class="kd">var</span> <span class="nx">collection2</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">roots</span><span class="p">,</span> <span class="nx">rootValueTypes</span><span class="p">,</span> <span class="nx">defaultRootName</span><span class="p">,</span> <span class="nx">database</span><span class="p">);</span>
+            <span class="nx">valueType</span> <span class="o">=</span> <span class="nx">collection2</span><span class="p">.</span><span class="nx">valueType</span><span class="p">;</span>
+            
+            <span class="nx">collection2</span><span class="p">.</span><span class="nx">forEachValue</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">results</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">});</span>
+        
+        <span class="nx">roots</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">oldValue</span><span class="p">;</span>
+        <span class="nx">rootValueTypes</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">oldValueType</span><span class="p">;</span>
+        
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">(</span><span class="nx">results</span><span class="p">,</span> <span class="nx">valueType</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Controls</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+        <span class="nx">args</span><span class="p">,</span>
+        <span class="nx">roots</span><span class="p">,</span> 
+        <span class="nx">rootValueTypes</span><span class="p">,</span> 
+        <span class="nx">defaultRootName</span><span class="p">,</span> 
+        <span class="nx">database</span>
+    <span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">collection</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">collection</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">roots</span><span class="p">,</span> <span class="nx">rootValueTypes</span><span class="p">,</span> <span class="nx">defaultRootName</span><span class="p">,</span> <span class="nx">database</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">collection</span><span class="p">.</span><span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">collection</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">([],</span> <span class="s2">&quot;text&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Controls</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">f</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+        <span class="nx">args</span><span class="p">,</span>
+        <span class="nx">roots</span><span class="p">,</span>
+        <span class="nx">rootValueTypes</span><span class="p">,</span>
+        <span class="nx">defaultRootName</span><span class="p">,</span>
+        <span class="nx">database</span>
+    <span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">collection</span><span class="p">,</span> <span class="nx">oldValue</span><span class="p">,</span> <span class="nx">oldValueType</span><span class="p">,</span> <span class="nx">results</span><span class="p">;</span>
+        <span class="nx">collection</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">roots</span><span class="p">,</span> <span class="nx">rootValueTypes</span><span class="p">,</span> <span class="nx">defaultRootName</span><span class="p">,</span> <span class="nx">database</span><span class="p">);</span>
+       
+        <span class="nx">oldValue</span> <span class="o">=</span> <span class="nx">roots</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">];</span>
+        <span class="nx">oldValueType</span> <span class="o">=</span> <span class="nx">rootValueTypes</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">];</span>
+       
+        <span class="nx">results</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Set</span><span class="p">();</span>
+        <span class="nx">rootValueTypes</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">collection</span><span class="p">.</span><span class="nx">valueType</span><span class="p">;</span>
+       
+        <span class="nx">collection</span><span class="p">.</span><span class="nx">forEachValue</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">roots</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">element</span><span class="p">;</span>
+           
+            <span class="kd">var</span> <span class="nx">collection2</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">roots</span><span class="p">,</span> <span class="nx">rootValueTypes</span><span class="p">,</span> <span class="nx">defaultRootName</span><span class="p">,</span> <span class="nx">database</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">collection2</span><span class="p">.</span><span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">collection2</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="s2">&quot;true&quot;</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">results</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+       
+        <span class="nx">roots</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">oldValue</span><span class="p">;</span>
+        <span class="nx">rootValueTypes</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">oldValueType</span><span class="p">;</span>
+       
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Expression</span><span class="p">.</span><span class="nx">_Collection</span><span class="p">(</span><span class="nx">results</span><span class="p">,</span> <span class="nx">collection</span><span class="p">.</span><span class="nx">valueType</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Tue Aug 14 2012 19:28:47 GMT-0400 (EDT)  </div></div></body></html>

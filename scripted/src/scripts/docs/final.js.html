@@ -1,0 +1,74 @@
+<!DOCTYPE html><html><head><title>final.js</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="./docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="./index.html" class="source"><span class="file_name">README</span></a><a href="./create.js.html" class="source "><span class="base_path">. / </span><span class="file_name">create.js</span></a><a href="./exhibit.js.html" class="source "><span class="base_path">. / </span><span class="file_name">exhibit.js</span></a><a href="./final.js.html" class="source selected"><span class="base_path">. / </span><span class="file_name">final.js</span></a><a href="./registry.js.html" class="source "><span class="base_path">. / </span><span class="file_name">registry.js</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>final.js</h1><div class="filepath">./</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><div class="dox"><div class="summary"><p>@fileOverview Load locales, any dynamic post-script loading activities.</p></div><div class="body"></div></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">delays</span><span class="p">,</span> <span class="nx">localeLoaded</span><span class="p">;</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>Without threading, this shouldn't introduce a race condition,
+but it is definitely a problem if concurrency comes into play.
+Maybe refactoring so everything uses the delay queue under the hood
+would make more sense.</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">delays</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nx">localeLoaded</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;delayCreation.exhibit&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">,</span> <span class="nx">delayID</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">delays</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">delayID</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;delayFinished.exhibit&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">,</span> <span class="nx">delayID</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">idx</span> <span class="o">=</span> <span class="nx">delays</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">delayID</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">delays</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">idx</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">delays</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">localeLoaded</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">delays</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+                <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;scriptsLoaded.exhibit&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+    
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;localeSet.exhibit&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">,</span> <span class="nx">localeURLs</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">localeURLs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">loader</span><span class="p">.</span><span class="nx">script</span><span class="p">(</span><span class="nx">localeURLs</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;loadExtensions.exhibit&quot;</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">bind</span><span class="p">(</span><span class="s2">&quot;error.exhibit&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">,</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">UI</span><span class="p">.</span><span class="nx">hideBusyIndicator</span><span class="p">();</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Debug</span><span class="p">.</span><span class="nx">exception</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">msg</span><span class="p">);</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="nx">msg</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">one</span><span class="p">(</span><span class="s2">&quot;localeLoaded.exhibit&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">localeLoaded</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">delays</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;scriptsLoaded.exhibit&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">one</span><span class="p">(</span><span class="s2">&quot;scriptsLoaded.exhibit&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;registerStaticComponents.exhibit&quot;</span><span class="p">,</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">staticRegistry</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">one</span><span class="p">(</span><span class="s2">&quot;exhibitConfigured.exhibit&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">,</span> <span class="nx">ex</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Bookmark</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">History</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">ex</span><span class="p">);</span>
+    <span class="p">});</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>Signal recording</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">one</span><span class="p">(</span><span class="s2">&quot;loadExtensions.exhibit&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">signals</span><span class="p">[</span><span class="s2">&quot;loadExtensions.exhibit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">one</span><span class="p">(</span><span class="s2">&quot;exhibitConfigured.exhibit&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">signals</span><span class="p">[</span><span class="s2">&quot;exhibitConfigured.exhibit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">checkBackwardsCompatibility</span><span class="p">();</span>
+    <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">staticRegistry</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">Registry</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;link[rel=&#39;exhibit-extension&#39;]&quot;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">idx</span><span class="p">,</span> <span class="nx">el</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">loader</span><span class="p">.</span><span class="nx">script</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="nx">el</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">));</span>
+    <span class="p">});</span>
+
+    <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">loader</span><span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;registerLocalization.exhibit&quot;</span><span class="p">,</span> <span class="nx">Exhibit</span><span class="p">.</span><span class="nx">staticRegistry</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Tue Aug 14 2012 19:27:17 GMT-0400 (EDT)  </div></div></body></html>

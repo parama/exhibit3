@@ -14,9 +14,13 @@
     };
 
     var javascriptFiles = [
+		//add views
         "scatter-plot-view.js",
         "bar-chart-view.js",
-        "force.js"
+        "force-diagram-view.js",
+		//add libraries
+		"flotr2.min.js",
+		"jit.js"
     ];
 
     var cssFiles = [
